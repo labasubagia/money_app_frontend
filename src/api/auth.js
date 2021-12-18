@@ -10,7 +10,7 @@ export const login = async ({ email, password }) => {
   return data;
 };
 
-export const register = ({ email, name, password }) => {
+export const register = async ({ email, name, password }) => {
   const payload = { email, name, password };
   const res = await axiosInstance.post('/auth/register', payload);
   const data = await res.data;

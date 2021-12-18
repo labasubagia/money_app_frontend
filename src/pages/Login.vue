@@ -1,7 +1,7 @@
 <template>
   <AuthLayout>
     <form
-      @submit.prevent="onsubmit"
+      @submit.prevent="onSubmit"
       class="bg-white p-8 rounded-lg w-full sm:w-auto h-screen sm:h-auto"
     >
       <h1 class="text-xl text-center border-b-2 border-b-gray-200 pb-4">Login</h1>
@@ -32,27 +32,33 @@
 </template>
 
 <script>
-import AuthLayout from "@/layouts/AuthLayout.vue";
 import { ref } from "vue";
-import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import { login } from "@/api/auth";
+import AuthLayout from "@/layouts/AuthLayout.vue";
+
 export default {
   components: {
     AuthLayout,
   },
   setup() {
-    const store = useStore();
+    const router = useRouter();
 
     const form = ref({
       email: '',
       password: '',
     })
 
-    const onsubmit = async () => {
-      const data = await login(form.value)
-      console.log({ data });
+    const onSubmit = async () => {
+      try {
+        await login(form.value)
+        router.replace({ path: '/' })
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    return { form, onsubmit };
+    return { form, onSubmit };
   }
 }
 </script>
