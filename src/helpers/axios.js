@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getToken } from './auth';
+import { getToken } from '@/helpers/auth';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
