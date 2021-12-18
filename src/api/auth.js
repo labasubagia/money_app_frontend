@@ -1,3 +1,4 @@
+import { setToken } from '@/helpers/auth';
 import axiosInstance from '@/helpers/axios';
 
 export const login = async ({ email, password }) => {
@@ -5,7 +6,7 @@ export const login = async ({ email, password }) => {
   const res = await axiosInstance.post('/auth/login', payload);
   const data = await res.data;
   const { token } = data;
-  if (token) localStorage.setItem('token', token);
+  if (token) setToken(token);
   return data;
 };
 
