@@ -1,33 +1,38 @@
 <template>
   <!-- Top nav -->
-  <div class="w-full block sm:hidden ">
-
+  <div class="w-full block sm:hidden">
     <!-- Nav -->
-    <div class="w-full flex sm:hidden justify-between p-2 px-4 border-b-2 border-b-gray-200">
-      <h1>{{appName}}</h1>
-      <button class="cursor-pointer" @click="isTopNavOpen=!isTopNavOpen">Menu</button>
+    <div
+      class="w-full flex sm:hidden justify-between items-center p-2 px-4 border-b-2 border-b-gray-200"
+    >
+      <h1>{{ appName }}</h1>
+      <div class="flex">
+        <button class="cursor-pointer mr-4" @click="isTopNavOpen = !isTopNavOpen">Menu</button>
+      </div>
     </div>
 
     <!-- menu -->
-    <div v-if="isTopNavOpen" class="border-b-2 border-b-gray-200 mt-4">
+    <div v-if="isTopNavOpen" class="border-b-2 border-b-gray-200 mt-4 mx-4">
       <router-link
         v-for="({ path, name }, index) in urls"
         :key="index"
         :to="path"
         :class="[
-          'block px-4 py-2 mb-3 text-sm mx-4 rounded-lg',
+          'block px-4 py-2 mb-3 text-sm rounded-lg',
           isCurrentPath(path) ? 'bg-gray-200 font-semibold' : 'bg-transparent',
         ]"
-      >
-        {{name}}
-      </router-link>
-    </div>
+      >{{ name }}</router-link>
 
+      <button
+        class="flex px-3 py-2 mb-3 text-sm rounded-lg bg-red-500 text-white hover:bg-red-400 w-full"
+        @click="onLogout"
+      >Logout</button>
+    </div>
   </div>
 
   <!-- Side nav -->
   <nav class="hidden sm:block p-4 w-full h-screen border-r-2 border-r-gray-100 shadow-sm">
-    <h1>{{appName}}</h1>
+    <h1>{{ appName }}</h1>
     <div class="mt-4">
       <router-link
         v-for="({ path, name }, index) in urls"
@@ -38,23 +43,29 @@
           isCurrentPath(path) ? 'bg-gray-200 font-semibold' : 'bg-transparent',
         ]"
         :to="path"
-      >
-        {{ name }}
-      </router-link>
+      >{{ name }}</router-link>
+      <button
+        class="px-4 py-2 bg-red-500 rounded-lg w-full text-sm text-white hover:bg-red-400"
+        @click="onLogout"
+      >Logout</button>
     </div>
   </nav>
 </template>
 
 <script>
+import { getToken, logout } from '@/helpers/auth';
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 export default {
   setup() {
     const route = useRoute();
+    const router = useRouter();
+    const store = useStore()
 
+    const appName = store.state.appName;
     const isTopNavOpen = ref(false);
-    const appName = ref('Money App')
     const urls = ref([
       { name: 'Home', path: '/' },
       { name: 'Category', path: '/category' },
@@ -64,7 +75,13 @@ export default {
 
     const isCurrentPath = (path) => route.path === path;
 
-    return { isTopNavOpen, appName, urls, isCurrentPath };
+    const onLogout = () => {
+      logout();
+      if (getToken()) return;
+      router.replace({ name: 'Login' })
+    }
+
+    return { isTopNavOpen, appName, urls, isCurrentPath, onLogout };
   },
 };
 </script>

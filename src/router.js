@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
+import { isAuthenticated } from './helpers/auth';
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -30,10 +31,22 @@ const router = createRouter({
     },
     {
       path: '/edit-profile',
-      name: 'Edit Profile',
+      name: 'EditProfile',
       component: () => import('@/pages/EditProfile.vue'),
     },
   ],
+});
+
+router.beforeEach(async (to, from) => {
+  const isToAuthPage = ['Login', 'Register'].includes(to.name);
+
+  if (!isAuthenticated() && !isToAuthPage) {
+    return '/login';
+  }
+
+  if (isAuthenticated() && isToAuthPage) {
+    return from.path;
+  }
 });
 
 export default router;

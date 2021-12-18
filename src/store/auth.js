@@ -1,4 +1,4 @@
-import axiosInstance from '@/lib/axios';
+import axiosInstance from '@/helpers/axios';
 
 const authStore = {
   namespaced: true,
