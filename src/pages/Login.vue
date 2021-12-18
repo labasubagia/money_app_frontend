@@ -1,16 +1,23 @@
 <template>
   <AuthLayout>
-    <form @submit.prevent="onsubmit" class="bg-white p-8 rounded-lg">
+    <form
+      @submit.prevent="onsubmit"
+      class="bg-white p-8 rounded-lg w-full sm:w-auto h-screen sm:h-auto"
+    >
       <h1 class="text-xl text-center border-b-2 border-b-gray-200 pb-4">Login</h1>
 
       <div class="mt-4">
         <div class="mb-4">
           <p class="mb-1 text-sm">Email</p>
-          <input class="border-2 rounded-lg py-1 px-3" type="text" v-model="form.email" />
+          <input class="border-2 rounded-lg py-1 px-3 w-full" type="text" v-model="form.email" />
         </div>
         <div class="mb-4">
           <p class="mb-1 text-sm">Password</p>
-          <input class="border-2 rounded-lg py-1 px-3" type="password" v-model="form.password" />
+          <input
+            class="border-2 rounded-lg py-1 px-3 w-full"
+            type="password"
+            v-model="form.password"
+          />
         </div>
       </div>
 
@@ -41,7 +48,7 @@ export default {
     })
 
     const onsubmit = async () => {
-      const data = await store.dispatch('auth/login', form.value);
+      const data = await login(form.value)
       console.log({ data });
     }
 

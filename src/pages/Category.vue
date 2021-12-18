@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <h1>Cash Flow</h1>
+    <h1>Category</h1>
   </MainLayout>
 </template>
 
@@ -10,6 +10,6 @@ export default {
   components: {
     MainLayout,
   },
-  setup() {},
+  setup() { },
 };
 </script>

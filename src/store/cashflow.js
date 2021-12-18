@@ -1,4 +1,8 @@
-import axiosInstance from '@/helpers/axios';
+import {
+  getAllCashFlow,
+  getCashFlowById,
+  getCashFlowSummary,
+} from '@/api/cashflow';
 
 const cashFlowStore = {
   namespaced: true,
@@ -10,42 +14,16 @@ const cashFlowStore = {
   },
 
   actions: {
-    async getSummary() {
-      const res = await axiosInstance.get('/cashflow/summary');
-      const data = await res.data;
-      return data;
+    async getSummary({ commit }, { start_date, end_date } = {}) {
+      commit('setSummary', await getCashFlowSummary({ start_date, end_date }));
     },
 
-    async getAll(ctx) {
-      const res = await axiosInstance.get('/cashflow');
-      const data = await res.data;
-      return data;
+    async getAll({ commit }) {
+      commit('setList', await getAllCashFlow());
     },
 
-    async getById(ctx, id) {
-      const res = await axiosInstance.get(`/cashflow/${id}`);
-      const data = await res.data;
-      return data;
-    },
-
-    async create(ctx, { name, amount, category_id, note, date }) {
-      const payload = { name, amount, category_id, note, date };
-      const res = await axiosInstance.post(`/cashflow`, payload);
-      const data = await res.data;
-      return data;
-    },
-
-    async update(ctx, { id, name, amount, category_id, note, date }) {
-      const payload = { name, amount, category_id, note, date };
-      const res = await axiosInstance.post(`/cashflow/${id}`, payload);
-      const data = await res.data;
-      return data;
-    },
-
-    async delete(ctx, id) {
-      const res = await axiosInstance.delete(`/cashflow/${id}`);
-      const data = await res.data;
-      return data;
+    async getById({ commit }, id) {
+      commit('setDetail', await getCashFlowById(id));
     },
   },
 

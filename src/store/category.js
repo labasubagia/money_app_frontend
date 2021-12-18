@@ -1,5 +1,3 @@
-import axiosInstance from '@/helpers/axios';
-
 const categoryStore = {
   namespaced: true,
 
@@ -9,34 +7,12 @@ const categoryStore = {
   },
 
   actions: {
-    async getAll(ctx) {
-      const res = await axiosInstance.get('/category');
-      const data = await res.data;
-      return data;
+    async getAll({ commit }) {
+      commit('setList', await getAllCategory());
     },
 
-    async getById(ctx, id) {
-      const res = await axiosInstance.get(`/category/${id}`);
-      const data = await res.data;
-      return data;
-    },
-
-    async create(ctx, { name, type }) {
-      const res = await axiosInstance.post(`/category`, { name, type });
-      const data = await res.data;
-      return data;
-    },
-
-    async update(ctx, { id, name, type }) {
-      const res = await axiosInstance.post(`/category/${id}`, { name, type });
-      const data = await res.data;
-      return data;
-    },
-
-    async delete(ctx, id) {
-      const res = await axiosInstance.delete(`/category/${id}`);
-      const data = await res.data;
-      return data;
+    async getById({ commit }, id) {
+      commit('setDetail', await getCategoryById(id));
     },
   },
 

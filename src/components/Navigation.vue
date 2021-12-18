@@ -32,14 +32,14 @@
 
   <!-- Side nav -->
   <nav class="hidden sm:block p-4 w-full h-screen border-r-2 border-r-gray-100 shadow-sm">
-    <h1>{{ appName }}</h1>
+    <h1 class="text-center text-xl font-bold">{{ appName }}</h1>
     <div class="mt-4">
       <router-link
         v-for="({ path, name }, index) in urls"
         :key="{ index }"
         :class="[
           'block px-4 py-2 mb-3',
-          'text-sm text-gray-900 rounded-lg',
+          'text-gray-900 rounded-lg',
           isCurrentPath(path) ? 'bg-gray-200 font-semibold' : 'bg-transparent',
         ]"
         :to="path"
@@ -60,18 +60,19 @@ import { useStore } from 'vuex';
 
 export default {
   setup() {
+    const urls = [
+      { name: 'Home', path: '/' },
+      { name: 'Category', path: '/category' },
+      { name: 'Cash Flow', path: '/cashflow' },
+      { name: 'Edit Profile', path: '/edit-profile' },
+    ];
+
     const route = useRoute();
     const router = useRouter();
     const store = useStore()
 
     const appName = store.state.appName;
     const isTopNavOpen = ref(false);
-    const urls = ref([
-      { name: 'Home', path: '/' },
-      { name: 'Category', path: '/category' },
-      { name: 'Cash Flow', path: '/cashflow' },
-      { name: 'Edit Profile', path: '/edit-profile' },
-    ]);
 
     const isCurrentPath = (path) => route.path === path;
 
