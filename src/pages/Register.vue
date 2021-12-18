@@ -10,11 +10,13 @@
         <div class="mb-4">
           <p class="mb-1 text-sm">Email</p>
           <input class="border-2 rounded-lg py-1 px-3 w-full" type="text" v-model="form.email" />
+          <p class="text-xs text-red-500 mt-1">{{ formError.email }}</p>
         </div>
 
         <div class="mb-4">
           <p class="mb-1 text-sm">Full Name</p>
           <input class="border-2 rounded-lg py-1 px-3 w-full" type="text" v-model="form.name" />
+          <p class="text-xs text-red-500 mt-1">{{ formError.name }}</p>
         </div>
 
         <div class="mb-4">
@@ -24,6 +26,7 @@
             type="password"
             v-model="form.password"
           />
+          <p class="text-xs text-red-500 mt-1">{{ formError.password }}</p>
         </div>
       </div>
 
@@ -32,7 +35,13 @@
         <router-link class="text-blue-300" to="/login">Login</router-link>
       </p>
 
-      <button class="py-2 px-3 bg-blue-500 text-white rounded-lg w-full">Register</button>
+      <button
+        :class="[
+          'py-2 px-3 bg-blue-500 text-white rounded-lg w-full transition ease-in duration-150',
+          isLoading ? 'bg-blue-300' : ''
+        ]"
+        :disabled="isLoading"
+      >Register</button>
     </form>
   </AuthLayout>
 </template>
@@ -42,6 +51,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { register } from "@/api/auth";
 import AuthLayout from "@/layouts/AuthLayout.vue";
+import { getHttpValidationError } from "@/helpers/http";
 
 export default {
   components: {
@@ -50,22 +60,36 @@ export default {
   setup() {
     const router = useRouter();
 
+    const isLoading = ref(false);
     const form = ref({
+      email: '',
+      name: '',
+      password: '',
+    })
+    const formError = ref({
       email: '',
       name: '',
       password: '',
     })
 
     const onSubmit = async () => {
+      isLoading.value = true;
       try {
         await register(form.value);
         router.replace({ path: '/login' })
       } catch (error) {
-        console.error(error);
+        const validationError = getHttpValidationError(error);
+        if (validationError) {
+          formError.value = validationError
+        } else {
+          console.error(error);
+        }
+      } finally {
+        isLoading.value = false
       }
     }
 
-    return { form, onSubmit };
+    return { form, formError, onSubmit, isLoading };
   }
 }
 </script>
