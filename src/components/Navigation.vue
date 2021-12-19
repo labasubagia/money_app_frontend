@@ -5,14 +5,17 @@
     <div
       class="w-full flex sm:hidden justify-between items-center p-2 px-4 border-b-2 border-b-gray-200"
     >
-      <h1>{{ appName }}</h1>
+      <h1 class="text-lg font-bold">{{ appName }}</h1>
       <div class="flex">
-        <button class="cursor-pointer mr-4" @click="isTopNavOpen = !isTopNavOpen">Menu</button>
+        <button class="cursor-pointer" @click="isTopNavOpen = !isTopNavOpen">
+          <MenuIcon class="w-9" v-if="!isTopNavOpen"/>
+          <XIcon class="w-9" v-else />
+        </button>
       </div>
     </div>
 
     <!-- menu -->
-    <div v-if="isTopNavOpen" class="border-b-2 border-b-gray-200 mt-4 mx-4">
+    <div v-if="isTopNavOpen" class="border-b-2 border-b-gray-200 shadow-md p-4 border-2 rounded-b-lg">
       <router-link
         v-for="({ path, name }, index) in urls"
         :key="index"
@@ -53,12 +56,17 @@
 </template>
 
 <script>
-import { getToken, logout } from '@/helpers/auth';
 import { ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+import { MenuIcon, XIcon } from '@heroicons/vue/outline'
+import { getToken, logout } from '@/helpers/auth';
+import { useRoute, useRouter } from 'vue-router';
 
 export default {
+  components: {
+    MenuIcon,
+    XIcon
+  },
   setup() {
     const urls = [
       { name: 'Home', path: '/' },

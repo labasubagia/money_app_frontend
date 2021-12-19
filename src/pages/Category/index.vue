@@ -18,17 +18,15 @@
           <p class="mt-1">{{ type }}</p>
         </div>
 
-        <div v-if="user_id">
-          <router-link
-            type="button"
-            class="bg-orange-400 mr-2 p-1 px-2 rounded-lg text-sm text-white"
-            :to="`/category/edit/${_id}`"
-          >Edit</router-link>
-          <button
-            type="button"
-            class="bg-red-500 p-1 px-2 rounded-lg text-sm text-white"
+        <div v-if="user_id" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <PencilIcon
+            class="w-9 bg-orange-500 p-1 text-white rounded-lg cursor-pointer"
+            @click="router.replace({path: `/category/edit/${_id}`})"
+          />
+          <TrashIcon
+            class="w-9 bg-red-500 p-2 text-white rounded-lg cursor-pointer"
             @click="onDelete(_id)"
-          >Delete</button>
+          />
         </div>
       </div>
     </div>
@@ -38,6 +36,8 @@
 <script>
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { PencilIcon, TrashIcon } from '@heroicons/vue/outline'
 import { deleteCategory } from '@/api/category';
 import { getHttpErrorMessage } from '@/helpers/http';
 import MainLayout from '@/layouts/MainLayout.vue';
@@ -45,9 +45,12 @@ import MainLayout from '@/layouts/MainLayout.vue';
 export default {
   components: {
     MainLayout,
+    PencilIcon,
+    TrashIcon,
   },
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     store.dispatch('category/getAll');
 
@@ -68,7 +71,7 @@ export default {
       }
     }
 
-    return { categories, onDelete }
+    return { categories, onDelete, router }
   },
 };
 </script>

@@ -20,17 +20,15 @@
           <p class="mt-1">{{ moment(date).format('DD/MM/YYYY') }}</p>
         </div>
 
-        <div>
-          <router-link
-            type="button"
-            class="bg-orange-400 mr-2 p-1 px-2 rounded-lg text-sm text-white"
-            :to="`/cashflow/edit/${_id}`"
-          >Edit</router-link>
-          <button
-            type="button"
-            class="bg-red-500 p-1 px-2 rounded-lg text-sm text-white"
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <PencilIcon
+            class="w-9 bg-orange-500 p-1 text-white rounded-lg cursor-pointer"
+            @click="router.replace({path: `/cashflow/edit/${_id}`})"
+          />
+          <TrashIcon
+            class="w-9 bg-red-500 p-2 text-white rounded-lg cursor-pointer"
             @click="onDelete(_id)"
-          >Delete</button>
+          />
         </div>
       </div>
     </div>
@@ -38,9 +36,10 @@
 </template>
 
 <script>
+import moment from 'moment';
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
-import moment from 'moment';
+import { PencilIcon, TrashIcon } from '@heroicons/vue/outline'
 import { getHttpErrorMessage } from '@/helpers/http';
 import MainLayout from '@/layouts/MainLayout.vue';
 import { deleteCashFlow } from '@/api/cashflow';
@@ -49,6 +48,8 @@ import { formatNumber } from '@/helpers/number';
 export default {
   components: {
     MainLayout,
+    PencilIcon,
+    TrashIcon
   },
   setup() {
     const store = useStore();
