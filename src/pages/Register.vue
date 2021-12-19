@@ -51,7 +51,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { register } from "@/api/auth";
 import AuthLayout from "@/layouts/AuthLayout.vue";
-import { getHttpValidationError } from "@/helpers/http";
+import { getHttpErrorMessage, getHttpValidationError } from "@/helpers/http";
 
 export default {
   components: {
@@ -75,13 +75,16 @@ export default {
     const onSubmit = async () => {
       isLoading.value = true;
       try {
-        await register(form.value);
+        const { message } = await register(form.value);
+        if (message) alert(message);
         router.replace({ path: '/login' })
       } catch (error) {
         const validationError = getHttpValidationError(error);
         if (validationError) {
           formError.value = validationError
         } else {
+          const message = getHttpErrorMessage(error);
+          if (message) alert(message);
           console.error(error);
         }
       } finally {
