@@ -85,8 +85,16 @@ export default {
       form.value.type = value.type;
     })
 
-    store.commit('category/setDetail', null);
-    if (id.value) store.dispatch('category/getById', id.value);
+    const onLoad = async () => {
+      store.commit('category/setDetail', null);
+      if (!id.value) return;
+      isLoading.value = true
+      await store.dispatch('category/getById', id.value);
+      isLoading.value = false
+    }
+
+    onLoad();
+
 
     const onSubmit = async () => {
       try {
