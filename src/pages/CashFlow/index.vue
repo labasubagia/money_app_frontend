@@ -1,6 +1,6 @@
 <template>
   <MainLayout>
-    <div class="flex justify-between items-center">
+    <div class="flex justify-between items-center pb">
       <h1 class="text-xl font-bold">CashFlow</h1>
       <router-link to="/cashflow/add" class="bg-blue-500 p-2 px-3 text-white rounded-lg">Add</router-link>
     </div>
@@ -52,7 +52,6 @@ export default {
   },
   setup() {
     const store = useStore();
-
 
     store.dispatch('cashflow/getAll');
 
