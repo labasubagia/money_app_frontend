@@ -6,3 +6,9 @@ export const updateUser = async ({ name, email, password }) => {
   const data = await res.data;
   return data;
 };
+
+export const getProfile = async () => {
+  const res = await axiosInstance.get('/user');
+  const data = await res.data;
+  return data?.data ?? null;
+};
