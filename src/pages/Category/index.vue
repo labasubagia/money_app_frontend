@@ -2,7 +2,7 @@
   <MainLayout>
     <div class="flex justify-between items-center">
       <h1 class="text-xl font-bold">Category</h1>
-      <button type="button" class="bg-blue-500 p-2 px-3 text-white rounded-lg">Add</button>
+      <router-link to="/category/add" class="bg-blue-500 p-2 px-3 text-white rounded-lg">Add</router-link>
     </div>
     <div class="mt-4">
       <div
@@ -19,10 +19,11 @@
         </div>
 
         <div v-if="user_id">
-          <button
+          <router-link
             type="button"
             class="bg-orange-400 mr-2 p-1 px-2 rounded-lg text-sm text-white"
-          >Edit</button>
+            :to="`/category/edit/${_id}`"
+          >Edit</router-link>
           <button
             type="button"
             class="bg-red-500 p-1 px-2 rounded-lg text-sm text-white"

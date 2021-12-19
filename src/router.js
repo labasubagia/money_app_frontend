@@ -22,7 +22,17 @@ const router = createRouter({
     {
       path: '/category',
       name: 'Category',
-      component: () => import('@/pages/Category.vue'),
+      component: () => import('@/pages/Category/index.vue'),
+    },
+    {
+      path: '/category/add',
+      name: 'CategoryAdd',
+      component: () => import('@/pages/Category/form.vue'),
+    },
+    {
+      path: '/category/edit/:id',
+      name: 'CategoryEdit',
+      component: () => import('@/pages/Category/form.vue'),
     },
     {
       path: '/cashflow',
