@@ -7,3 +7,7 @@ export const getHttpValidationError = (error) => {
   const isEmpty = Object.keys(result).length == 0;
   return isEmpty ? null : result;
 };
+
+export const getHttpErrorMessage = (error) => {
+  return error?.response?.data?.message ?? null;
+};

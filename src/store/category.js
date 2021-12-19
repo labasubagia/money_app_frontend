@@ -1,3 +1,5 @@
+import { getAllCategory, getCategoryById } from '@/api/category';
+
 const categoryStore = {
   namespaced: true,
 
