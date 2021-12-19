@@ -37,7 +37,17 @@ const router = createRouter({
     {
       path: '/cashflow',
       name: 'CashFlow',
-      component: () => import('@/pages/CashFlow.vue'),
+      component: () => import('@/pages/CashFlow/index.vue'),
+    },
+    {
+      path: '/cashflow/add',
+      name: 'CashFlowAdd',
+      component: () => import('@/pages/CashFlow/form.vue'),
+    },
+    {
+      path: '/cashflow/edit/:id',
+      name: 'CashFlowEdit',
+      component: () => import('@/pages/CashFlow/form.vue'),
     },
     {
       path: '/edit-profile',
