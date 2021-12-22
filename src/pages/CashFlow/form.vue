@@ -43,7 +43,7 @@
       <!-- Note -->
       <div class="mb-4">
         <p class="mb-1 text-sm">Note</p>
-        <textarea class="w-full py-2 px-3 border-2 rounded-lg" rows="2" v-model="form.note">{{ form.note.value }}</textarea>
+        <textarea class="w-full py-2 px-3 border-2 rounded-lg" rows="2" v-model="form.note">{{ form.note }}</textarea>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">

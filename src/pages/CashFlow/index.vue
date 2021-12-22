@@ -44,6 +44,7 @@ import { getHttpErrorMessage } from '@/helpers/http';
 import MainLayout from '@/layouts/MainLayout.vue';
 import { deleteCashFlow } from '@/api/cashflow';
 import { formatNumber } from '@/helpers/number';
+import { useRouter } from 'vue-router';
 
 export default {
   components: {
@@ -53,6 +54,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const router = useRouter();
 
     store.dispatch('cashflow/getAll');
 
@@ -73,7 +75,7 @@ export default {
       }
     }
 
-    return { cashFlows, onDelete, moment, formatNumber }
+    return { cashFlows, onDelete, moment, formatNumber, router }
   },
 };
 </script>
