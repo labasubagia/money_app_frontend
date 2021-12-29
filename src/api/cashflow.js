@@ -29,9 +29,18 @@ export const createCashFlow = async ({
   category_id,
   note,
   date,
+  receipt,
 }) => {
-  const payload = { name, amount, category_id, note, date };
-  const res = await axiosInstance.post(`/cashflow`, payload);
+  const payload = new FormData();
+  payload.append('name', name);
+  payload.append('amount', amount);
+  payload.append('category_id', category_id);
+  payload.append('note', note);
+  payload.append('date', date);
+  payload.append('receipt', receipt);
+  const res = await axiosInstance.post(`/cashflow`, payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
   const data = await res.data;
   return data;
 };
@@ -43,9 +52,18 @@ export const updateCashFlow = async ({
   category_id,
   note,
   date,
+  receipt,
 }) => {
-  const payload = { name, amount, category_id, note, date };
-  const res = await axiosInstance.post(`/cashflow/${id}`, payload);
+  const payload = new FormData();
+  payload.append('name', name);
+  payload.append('amount', amount);
+  payload.append('category_id', category_id);
+  payload.append('note', note);
+  payload.append('date', date);
+  payload.append('receipt', receipt);
+  const res = await axiosInstance.post(`/cashflow/${id}`, payload, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
   const data = await res.data;
   return data;
 };

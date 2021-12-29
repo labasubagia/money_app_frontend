@@ -46,6 +46,20 @@
         <textarea class="w-full py-2 px-3 border-2 rounded-lg" rows="2" v-model="form.note">{{ form.note }}</textarea>
       </div>
 
+      <!-- Current Receipt -->
+      <div v-if="detail?.receipt_url" class="mb-4">
+        <p class="mb-1 text-sm">Current Receipt</p>
+        <a :href="detail?.receipt_url" target="_blank" rel="noopener noreferrer">
+          <img :src="detail?.receipt_url" class="w-full sm:w-6/12 md:w-3/12 border-2" alt="Receipt">
+        </a>
+      </div>
+
+      <!-- Receipt File Upload -->
+      <div class="mb-8">
+        <p class="mb-1 text-sm"> Upload {{detail?.receipt_url ? 'New' : ''}} Receipt</p>
+        <input type="file" name="" accept="image/*" @change="receiptOnChanged">
+      </div>
+
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <router-link
           to="/cashflow"
@@ -90,6 +104,7 @@ export default {
       note: '',
       date: new Date().toISOString().slice(0, 10),
       amount: '',
+      receipt: null,
     });
     const formError = ref({
       name: '',
@@ -97,6 +112,7 @@ export default {
       note: '',
       date: '',
       amount: '',
+      receipt: '',
     });
 
     const categories = computed(() => store.state.category.list);
@@ -119,6 +135,12 @@ export default {
 
     const loadCategory = async () => {
       await store.dispatch('category/getAll');
+    }
+
+    const receiptOnChanged = async(event) => {
+      const files = event?.target?.files || event?.dataTransfer?.files;
+      if (!files?.length) return
+      form.value.receipt = files[0]
     }
 
     const onLoad = async () => {
@@ -154,7 +176,7 @@ export default {
       }
     }
 
-    return { form, formError, onSubmit, isLoading, categories }
+    return { form, formError, onSubmit, isLoading, categories, detail, receiptOnChanged }
   },
 };
 </script>
