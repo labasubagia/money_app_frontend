@@ -1,17 +1,29 @@
 <template>
   <MainLayout>
     <h1 class="text-xl font-bold">Home</h1>
+    <div class="flex flex-col sm:flex-row mt-4">
+      <div>
+        <p class="mb-1 text-sm">Start Date</p>
+        <input class="border-2 rounded-lg py-1 px-3 w-full" type="date" v-model="dateRange.start_date">
+      </div>
+
+      <div class="mx-0 mt-2 sm:mx-4 sm:mt-0">
+        <p class="mb-1 text-sm">End Date</p>
+        <input class="border-2 rounded-lg py-1 px-3 w-full" type="date" v-model="dateRange.end_date">
+      </div>
+    </div>
+
     <div class="grid gap-4 mt-6 grid-cols-1 md:grid-cols-2 w-full">
       <!-- Expense -->
       <div class="p-4 border-l-8 border-l-red-500 rounded-lg shadow-md border-2">
         <h1 class="text-2xl">- {{ formatNumber(summary?.expense_date_range) }}</h1>
-        <p>Expense This Month</p>
+        <p>Expense</p>
       </div>
 
       <!-- Income -->
       <div class="p-4 border-l-8 border-l-green-500 rounded-lg shadow-md border-2">
         <h1 class="text-2xl">+ {{ formatNumber(summary?.income_date_range) }}</h1>
-        <p>Expense This Month</p>
+        <p>Income</p>
       </div>
 
       <!-- Balance This Month -->
@@ -22,7 +34,7 @@
         ]"
       >
         <h1 class="text-2xl">{{ formatNumber(summary?.balance_date_range) }}</h1>
-        <p>Balance This Month</p>
+        <p>Balance</p>
       </div>
 
       <!-- Balance This Month -->
@@ -40,10 +52,11 @@
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { formatNumber } from '@/helpers/number';
 import MainLayout from '@/layouts/MainLayout.vue';
+import { DEFAULT_END_DATE, DEFAULT_START_DATE } from '@/helpers/date';
 
 export default {
   components: {
@@ -52,11 +65,21 @@ export default {
   setup() {
     const store = useStore();
 
-    store.dispatch('cashflow/getSummary');
-
     const summary = computed(() => store.state.cashflow.summary);
+    const dateRange = ref({ start_date: DEFAULT_START_DATE, end_date: DEFAULT_END_DATE });
 
-    return { summary, formatNumber }
+    const loadSummary = () => {
+      store.dispatch('cashflow/getSummary', {
+        start_date: dateRange.value.start_date,
+        end_date: dateRange.value.end_date,
+      });
+    }
+
+    loadSummary();
+
+    watch(dateRange.value, loadSummary);
+
+    return { summary, formatNumber, dateRange }
   },
 };
 </script>

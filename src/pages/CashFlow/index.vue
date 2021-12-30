@@ -4,7 +4,20 @@
       <h1 class="text-xl font-bold">CashFlow</h1>
       <router-link to="/cashflow/add" class="bg-blue-500 p-2 px-3 text-white rounded-lg">Add</router-link>
     </div>
-    <div class="mt-4">
+
+    <div class="flex flex-col sm:flex-row mt-4">
+      <div>
+        <p class="mb-1 text-sm">Start Date</p>
+        <input class="border-2 rounded-lg py-1 px-3 w-full" type="date" v-model="dateRange.start_date">
+      </div>
+
+      <div class="mx-0 mt-2 sm:mx-4 sm:mt-0">
+        <p class="mb-1 text-sm">End Date</p>
+        <input class="border-2 rounded-lg py-1 px-3 w-full" type="date" v-model="dateRange.end_date">
+      </div>
+    </div>
+
+    <div class="mt-8">
       <div
         v-for="({ _id, name, date, amount, category_name, category_type }, i) in cashFlows"
         :key="i"
@@ -37,7 +50,7 @@
 
 <script>
 import moment from 'moment';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { PencilIcon, TrashIcon } from '@heroicons/vue/outline'
 import { getHttpErrorMessage } from '@/helpers/http';
@@ -45,6 +58,8 @@ import MainLayout from '@/layouts/MainLayout.vue';
 import { deleteCashFlow } from '@/api/cashflow';
 import { formatNumber } from '@/helpers/number';
 import { useRouter } from 'vue-router';
+import { DEFAULT_END_DATE, DEFAULT_START_DATE } from '@/helpers/date';
+
 
 export default {
   components: {
@@ -56,10 +71,20 @@ export default {
     const store = useStore();
     const router = useRouter();
 
-    store.dispatch('cashflow/getAll');
-
     const cashFlows = computed(() => store.state.cashflow.list);
+    const dateRange = ref({ start_date: DEFAULT_START_DATE, end_date: DEFAULT_END_DATE });
     const errorMessage = ref(null)
+
+    const loadCashflow = () => {
+      store.dispatch('cashflow/getAll', {
+        start_date: dateRange.value.start_date,
+        end_date: dateRange.value.end_date,
+      });
+    }
+
+    loadCashflow();
+
+    watch(dateRange.value, loadCashflow);
 
     const onDelete = async (id) => {
       try {
@@ -75,7 +100,7 @@ export default {
       }
     }
 
-    return { cashFlows, onDelete, moment, formatNumber, router }
+    return { cashFlows, onDelete, moment, formatNumber, router, dateRange }
   },
 };
 </script>

@@ -1,9 +1,10 @@
 import axiosInstance from '@/helpers/axios';
+import { DEFAULT_END_DATE, DEFAULT_START_DATE } from '@/helpers/date';
 import moment from 'moment';
 
 export const getCashFlowSummary = async ({
-  start_date = moment().startOf('month').toDate(),
-  end_date = moment().endOf('month').toDate(),
+  start_date = DEFAULT_START_DATE,
+  end_date = DEFAULT_END_DATE,
 } = {}) => {
   const params = { start_date, end_date };
   const res = await axiosInstance.get('/cashflow/summary', { params });
@@ -11,8 +12,12 @@ export const getCashFlowSummary = async ({
   return data?.data ?? null;
 };
 
-export const getAllCashFlow = async () => {
-  const res = await axiosInstance.get('/cashflow');
+export const getAllCashFlow = async ({
+  start_date = DEFAULT_START_DATE,
+  end_date = DEFAULT_END_DATE,
+} = {}) => {
+  const params = { start_date, end_date };
+  const res = await axiosInstance.get('/cashflow', { params });
   const data = await res.data;
   return data?.data ?? [];
 };

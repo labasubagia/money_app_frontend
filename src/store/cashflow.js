@@ -18,8 +18,8 @@ const cashFlowStore = {
       commit('setSummary', await getCashFlowSummary({ start_date, end_date }));
     },
 
-    async getAll({ commit }) {
-      commit('setList', await getAllCashFlow());
+    async getAll({ commit }, { start_date, end_date } = {}) {
+      commit('setList', await getAllCashFlow({ start_date, end_date }));
     },
 
     async getById({ commit }, id) {
