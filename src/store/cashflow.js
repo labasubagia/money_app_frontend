@@ -14,12 +14,20 @@ const cashFlowStore = {
   },
 
   actions: {
-    async getSummary({ commit }, { start_date, end_date } = {}) {
-      commit('setSummary', await getCashFlowSummary({ start_date, end_date }));
+    async getSummary({ commit, rootState }) {
+      const payload = {
+        start_date: rootState?.startDate,
+        end_date: rootState?.endDate,
+      };
+      commit('setSummary', await getCashFlowSummary(payload));
     },
 
-    async getAll({ commit }, { start_date, end_date } = {}) {
-      commit('setList', await getAllCashFlow({ start_date, end_date }));
+    async getAll({ commit, rootState }) {
+      const payload = {
+        start_date: rootState?.startDate,
+        end_date: rootState?.endDate,
+      };
+      commit('setList', await getAllCashFlow(payload));
     },
 
     async getById({ commit }, id) {

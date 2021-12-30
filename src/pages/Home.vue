@@ -4,12 +4,22 @@
     <div class="flex flex-col sm:flex-row mt-4">
       <div>
         <p class="mb-1 text-sm">Start Date</p>
-        <input class="border-2 rounded-lg py-1 px-3 w-full" type="date" v-model="dateRange.start_date">
+        <input
+          class="border-2 rounded-lg py-1 px-3 w-full"
+          type="date"
+          :value="startDate"
+          @input="e => store.commit('setStartDate', e.target.value)"
+        >
       </div>
 
       <div class="mx-0 mt-2 sm:mx-4 sm:mt-0">
         <p class="mb-1 text-sm">End Date</p>
-        <input class="border-2 rounded-lg py-1 px-3 w-full" type="date" v-model="dateRange.end_date">
+        <input
+          class="border-2 rounded-lg py-1 px-3 w-full"
+          type="date"
+          :value="endDate"
+          @input="e => store.commit('setEndDate', e.target.value)"
+        >
       </div>
     </div>
 
@@ -56,7 +66,6 @@ import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { formatNumber } from '@/helpers/number';
 import MainLayout from '@/layouts/MainLayout.vue';
-import { DEFAULT_END_DATE, DEFAULT_START_DATE } from '@/helpers/date';
 
 export default {
   components: {
@@ -66,20 +75,19 @@ export default {
     const store = useStore();
 
     const summary = computed(() => store.state.cashflow.summary);
-    const dateRange = ref({ start_date: DEFAULT_START_DATE, end_date: DEFAULT_END_DATE });
+
+    const startDate = computed(() => store.state.startDate);
+    const endDate = computed(() => store.state.endDate);
 
     const loadSummary = () => {
-      store.dispatch('cashflow/getSummary', {
-        start_date: dateRange.value.start_date,
-        end_date: dateRange.value.end_date,
-      });
+      store.dispatch('cashflow/getSummary');
     }
 
     loadSummary();
 
-    watch(dateRange.value, loadSummary);
+    watch([startDate, endDate], loadSummary)
 
-    return { summary, formatNumber, dateRange }
+    return { summary, formatNumber, store, startDate, endDate }
   },
 };
 </script>

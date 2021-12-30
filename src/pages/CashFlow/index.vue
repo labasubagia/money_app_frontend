@@ -8,12 +8,22 @@
     <div class="flex flex-col sm:flex-row mt-4">
       <div>
         <p class="mb-1 text-sm">Start Date</p>
-        <input class="border-2 rounded-lg py-1 px-3 w-full" type="date" v-model="dateRange.start_date">
+        <input
+          class="border-2 rounded-lg py-1 px-3 w-full"
+          type="date"
+          :value="startDate"
+          @input="e => store.commit('setStartDate', e.target.value)"
+        >
       </div>
 
       <div class="mx-0 mt-2 sm:mx-4 sm:mt-0">
         <p class="mb-1 text-sm">End Date</p>
-        <input class="border-2 rounded-lg py-1 px-3 w-full" type="date" v-model="dateRange.end_date">
+        <input
+          class="border-2 rounded-lg py-1 px-3 w-full"
+          type="date"
+          :value="endDate"
+          @input="e => store.commit('setEndDate', e.target.value)"
+        >
       </div>
     </div>
 
@@ -58,7 +68,6 @@ import MainLayout from '@/layouts/MainLayout.vue';
 import { deleteCashFlow } from '@/api/cashflow';
 import { formatNumber } from '@/helpers/number';
 import { useRouter } from 'vue-router';
-import { DEFAULT_END_DATE, DEFAULT_START_DATE } from '@/helpers/date';
 
 
 export default {
@@ -72,19 +81,18 @@ export default {
     const router = useRouter();
 
     const cashFlows = computed(() => store.state.cashflow.list);
-    const dateRange = ref({ start_date: DEFAULT_START_DATE, end_date: DEFAULT_END_DATE });
     const errorMessage = ref(null)
 
     const loadCashflow = () => {
-      store.dispatch('cashflow/getAll', {
-        start_date: dateRange.value.start_date,
-        end_date: dateRange.value.end_date,
-      });
+      store.dispatch('cashflow/getAll');
     }
+
+    const startDate = computed(() => store.state.startDate);
+    const endDate = computed(() => store.state.endDate);
 
     loadCashflow();
 
-    watch(dateRange.value, loadCashflow);
+    watch([startDate, endDate], loadCashflow)
 
     const onDelete = async (id) => {
       try {
@@ -100,7 +108,16 @@ export default {
       }
     }
 
-    return { cashFlows, onDelete, moment, formatNumber, router, dateRange }
+    return {
+      cashFlows,
+      onDelete,
+      moment,
+      formatNumber,
+      router,
+      startDate,
+      endDate,
+      store
+    };
   },
 };
 </script>
