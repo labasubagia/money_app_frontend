@@ -7,7 +7,9 @@
 
     <Loading v-if="isLoading" class="mt-4"/>
     <div v-else class="mt-4">
+      <Empty v-if="!categories.length" text="No Categories"/>
       <div
+        v-else
         v-for="({ _id, name, type, user_id }, i) in categories"
         :key="i"
         :class="[
@@ -44,6 +46,7 @@ import { deleteCategory } from '@/api/category';
 import { getHttpErrorMessage } from '@/helpers/http';
 import MainLayout from '@/layouts/MainLayout.vue';
 import Loading from '@/components/Loading.vue';
+import Empty from '@/components/Empty.vue';
 
 export default {
   components: {
@@ -51,6 +54,7 @@ export default {
     PencilIcon,
     TrashIcon,
     Loading,
+    Empty,
   },
   setup() {
     const store = useStore();

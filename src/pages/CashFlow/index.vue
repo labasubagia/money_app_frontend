@@ -29,7 +29,9 @@
 
     <Loading v-if="isLoading" class="mt-8"/>
     <div v-else class="mt-8">
+      <Empty v-if="!cashFlows.length" text="No Cashflow"/>
       <div
+        v-else
         v-for="({ _id, name, date, amount, category_name, category_type }, i) in cashFlows"
         :key="i"
         :class="[
@@ -70,7 +72,7 @@ import { deleteCashFlow } from '@/api/cashflow';
 import { formatNumber } from '@/helpers/number';
 import { useRouter } from 'vue-router';
 import Loading from '@/components/Loading.vue';
-
+import Empty from '@/components/Empty.vue';
 
 export default {
   components: {
@@ -78,6 +80,7 @@ export default {
     PencilIcon,
     TrashIcon,
     Loading,
+    Empty,
   },
   setup() {
     const store = useStore();
