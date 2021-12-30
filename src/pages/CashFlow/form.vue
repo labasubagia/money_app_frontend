@@ -3,7 +3,9 @@
     <div class="flex justify-between items-center">
       <h1 class="text-xl font-bold">CashFlow</h1>
     </div>
-    <form class="mt-4" @submit.prevent="onSubmit">
+
+    <Loading v-if="isLoading" class="mt-4"/>
+    <form v-else class="mt-4" @submit.prevent="onSubmit">
       <!-- Amount -->
       <div class="mb-4">
         <p class="mb-1 text-sm">Amount</p>
@@ -69,9 +71,9 @@
         <button
           :class="[
             'py-2 px-3 bg-blue-500 text-white rounded-lg w-full transition ease-in duration-150',
-            isLoading ? 'bg-blue-300' : ''
+            isLoading || isSubmitting ? 'bg-blue-300' : ''
           ]"
-          :disabled="isLoading"
+          :disabled="isLoading || isSubmitting"
         >Save</button>
       </div>
     </form>
@@ -86,10 +88,12 @@ import { createCashFlow, updateCashFlow } from '@/api/cashflow';
 import { getHttpErrorMessage, getHttpValidationError } from '@/helpers/http';
 import MainLayout from '@/layouts/MainLayout.vue';
 import moment from 'moment';
+import Loading from '@/components/Loading.vue';
 
 export default {
   components: {
     MainLayout,
+    Loading,
   },
   setup() {
     const route = useRoute();
@@ -98,6 +102,7 @@ export default {
 
     const id = ref(route.params?.id);
     const isLoading = ref(false);
+    const isSubmitting = ref(false);
     const form = ref({
       name: '',
       category_id: '',
@@ -156,7 +161,7 @@ export default {
 
     const onSubmit = async () => {
       try {
-        isLoading.value = true;
+        isSubmitting.value = true;
         const handler = id.value ? updateCashFlow : createCashFlow
         const payload = { ...form.value, id: id.value }
         const { message } = await handler(payload);
@@ -172,11 +177,20 @@ export default {
           console.error(error);
         }
       } finally {
-        isLoading.value = false
+        isSubmitting.value = false
       }
     }
 
-    return { form, formError, onSubmit, isLoading, categories, detail, receiptOnChanged }
+    return {
+      form,
+      formError,
+      onSubmit,
+      isLoading,
+      isSubmitting,
+      categories,
+      detail,
+      receiptOnChanged,
+    };
   },
 };
 </script>

@@ -3,7 +3,9 @@
     <div class="flex justify-between items-center">
       <h1 class="text-xl font-bold">Edit Profile</h1>
     </div>
-    <form class="mt-4" @submit.prevent="onSubmit">
+
+    <Loading v-if="isLoading" class="mt-4"/>
+    <form v-else class="mt-4" @submit.prevent="onSubmit">
 
       <!-- Email -->
       <div class="mb-4">
@@ -52,10 +54,12 @@ import { useRoute, useRouter } from 'vue-router';
 import { updateUser } from '@/api/user';
 import { getHttpErrorMessage, getHttpValidationError } from '@/helpers/http';
 import MainLayout from '@/layouts/MainLayout.vue';
+import Loading from '@/components/Loading.vue';
 
 export default {
   components: {
     MainLayout,
+    Loading,
   },
   setup() {
     const route = useRoute();
@@ -113,7 +117,13 @@ export default {
       }
     }
 
-    return { form, formError, onSubmit, isLoading, router }
+    return {
+      form,
+      formError,
+      onSubmit,
+      isLoading,
+      router
+    };
   },
 };
 </script>

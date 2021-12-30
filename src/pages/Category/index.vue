@@ -4,7 +4,9 @@
       <h1 class="text-xl font-bold">Category</h1>
       <router-link to="/category/add" class="bg-blue-500 p-2 px-3 text-white rounded-lg">Add</router-link>
     </div>
-    <div class="mt-4">
+
+    <Loading v-if="isLoading" class="mt-4"/>
+    <div v-else class="mt-4">
       <div
         v-for="({ _id, name, type, user_id }, i) in categories"
         :key="i"
@@ -41,21 +43,30 @@ import { PencilIcon, TrashIcon } from '@heroicons/vue/outline'
 import { deleteCategory } from '@/api/category';
 import { getHttpErrorMessage } from '@/helpers/http';
 import MainLayout from '@/layouts/MainLayout.vue';
+import Loading from '@/components/Loading.vue';
 
 export default {
   components: {
     MainLayout,
     PencilIcon,
     TrashIcon,
+    Loading,
   },
   setup() {
     const store = useStore();
     const router = useRouter();
 
-    store.dispatch('category/getAll');
-
     const categories = computed(() => store.state.category.list);
     const errorMessage = ref(null)
+    const isLoading = ref(true);
+
+    const loadCategories = async () => {
+      isLoading.value = true;
+      await store.dispatch('category/getAll');
+      isLoading.value = false;
+    }
+
+    loadCategories();
 
     const onDelete = async (id) => {
       try {
@@ -71,7 +82,12 @@ export default {
       }
     }
 
-    return { categories, onDelete, router }
+    return {
+      categories,
+      onDelete,
+      router,
+      isLoading,
+    };
   },
 };
 </script>

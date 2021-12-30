@@ -27,7 +27,8 @@
       </div>
     </div>
 
-    <div class="mt-8">
+    <Loading v-if="isLoading" class="mt-8"/>
+    <div v-else class="mt-8">
       <div
         v-for="({ _id, name, date, amount, category_name, category_type }, i) in cashFlows"
         :key="i"
@@ -68,13 +69,15 @@ import MainLayout from '@/layouts/MainLayout.vue';
 import { deleteCashFlow } from '@/api/cashflow';
 import { formatNumber } from '@/helpers/number';
 import { useRouter } from 'vue-router';
+import Loading from '@/components/Loading.vue';
 
 
 export default {
   components: {
     MainLayout,
     PencilIcon,
-    TrashIcon
+    TrashIcon,
+    Loading,
   },
   setup() {
     const store = useStore();
@@ -82,9 +85,12 @@ export default {
 
     const cashFlows = computed(() => store.state.cashflow.list);
     const errorMessage = ref(null)
+    const isLoading = ref(false);
 
-    const loadCashflow = () => {
-      store.dispatch('cashflow/getAll');
+    const loadCashflow = async() => {
+      isLoading.value = true;
+      await store.dispatch('cashflow/getAll');
+      isLoading.value = false;
     }
 
     const startDate = computed(() => store.state.startDate);
@@ -116,7 +122,8 @@ export default {
       router,
       startDate,
       endDate,
-      store
+      store,
+      isLoading,
     };
   },
 };

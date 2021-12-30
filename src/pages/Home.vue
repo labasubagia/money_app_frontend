@@ -1,6 +1,7 @@
 <template>
   <MainLayout>
     <h1 class="text-xl font-bold">Home</h1>
+
     <div class="flex flex-col sm:flex-row mt-4">
       <div>
         <p class="mb-1 text-sm">Start Date</p>
@@ -23,7 +24,8 @@
       </div>
     </div>
 
-    <div class="grid gap-4 mt-6 grid-cols-1 md:grid-cols-2 w-full">
+    <Loading v-if="isLoading" class="mt-6"/>
+    <div v-else class="grid gap-4 mt-6 grid-cols-1 md:grid-cols-2 w-full">
       <!-- Expense -->
       <div class="p-4 border-l-8 border-l-red-500 rounded-lg shadow-md border-2">
         <h1 class="text-2xl">- {{ formatNumber(summary?.expense_date_range) }}</h1>
@@ -66,10 +68,12 @@ import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { formatNumber } from '@/helpers/number';
 import MainLayout from '@/layouts/MainLayout.vue';
+import Loading from '@/components/Loading.vue';
 
 export default {
   components: {
     MainLayout,
+    Loading,
   },
   setup() {
     const store = useStore();
@@ -78,16 +82,26 @@ export default {
 
     const startDate = computed(() => store.state.startDate);
     const endDate = computed(() => store.state.endDate);
+    const isLoading = ref(true);
 
-    const loadSummary = () => {
-      store.dispatch('cashflow/getSummary');
+    const loadSummary = async () => {
+      isLoading.value = true;
+      await store.dispatch('cashflow/getSummary');
+      isLoading.value = false
     }
 
     loadSummary();
 
     watch([startDate, endDate], loadSummary)
 
-    return { summary, formatNumber, store, startDate, endDate }
+    return {
+      summary,
+      formatNumber,
+      store,
+      startDate,
+      endDate,
+      isLoading,
+    };
   },
 };
 </script>
