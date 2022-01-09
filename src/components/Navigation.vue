@@ -46,7 +46,7 @@
   <nav class="hidden sm:block p-4 w-full h-screen border-r-2 border-r-gray-100 shadow-sm bg-white">
     <h1 class="text-center text-xl font-bold">{{ appName }}</h1>
 
-    <div class="my-6 text-center bg-gray-100 p-4 rounded-lg">
+    <div class="mt-4 mb-2 text-center bg-gray-100 p-4 rounded-lg">
       <p>{{ user?.name }}</p>
       <p class="mt-2 text-sm">{{ user?.email }}</p>
     </div>
