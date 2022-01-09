@@ -50,6 +50,11 @@ const router = createRouter({
       component: () => import('@/pages/CashFlow/form.vue'),
     },
     {
+      path: '/cashflow/detail/:id',
+      name: 'CashFlowDetail',
+      component: () => import('@/pages/CashFlow/detail.vue'),
+    },
+    {
       path: '/edit-profile',
       name: 'EditProfile',
       component: () => import('@/pages/EditProfile.vue'),

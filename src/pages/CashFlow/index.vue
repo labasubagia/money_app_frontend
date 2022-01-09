@@ -6,7 +6,7 @@
     </div>
 
     <div class="flex flex-col sm:flex-row mt-4 items-center">
-      <div>
+      <div class="w-full sm:w-auto">
         <p class="mb-1 text-sm">Start Date</p>
         <input
           class="border-2 rounded-lg py-1 px-3 w-full"
@@ -16,7 +16,7 @@
         />
       </div>
 
-      <div class="mx-0 mt-2 sm:ml-4 sm:mt-0">
+      <div class="w-full sm:w-auto mx-0 mt-2 sm:ml-4 sm:mt-0">
         <p class="mb-1 text-sm">End Date</p>
         <input
           class="border-2 rounded-lg py-1 px-3 w-full"
@@ -26,7 +26,7 @@
         />
       </div>
 
-      <div class="mx-0 mt-2 sm:ml-4 sm:mt-0">
+      <div class="w-full sm:w-auto mx-0 mt-2 sm:ml-4 sm:mt-0">
         <p class="mb-1 text-sm">Category</p>
         <select
           class="border-2 bg-white rounded-lg py-2 px-2 w-full"
@@ -59,14 +59,18 @@
           <div>
             <p class="text-xl">{{ formatNumber(amount_value) }}</p>
             <p class="mt-1">{{ name }}</p>
-            <p class="text-sm mt-1 whitespace-nowrap">{{ category_type }} - {{ category_name }}</p>
-            <p class="text-sm mt-1">{{ moment(date).format('DD/MM/YYYY') }}</p>
+            <p class="mt-1 whitespace-nowrap">{{ category_type }} - {{ category_name }}</p>
+            <p class="mt-1">{{ moment(date).format('DD/MM/YYYY') }}</p>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+            <InformationCircleIcon
+              class="w-9 bg-green-300 p-2 text-white rounded-lg cursor-pointer"
+              @click="router.push({ path: `/cashflow/detail/${_id}` })"
+            />
             <PencilIcon
               class="w-9 bg-orange-500 p-1 text-white rounded-lg cursor-pointer"
-              @click="router.replace({ path: `/cashflow/edit/${_id}` })"
+              @click="router.push({ path: `/cashflow/edit/${_id}` })"
             />
             <TrashIcon
               class="w-9 bg-red-500 p-2 text-white rounded-lg cursor-pointer"
@@ -83,7 +87,7 @@
 import moment from 'moment';
 import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { PencilIcon, TrashIcon } from '@heroicons/vue/outline'
+import { PencilIcon, TrashIcon, InformationCircleIcon } from '@heroicons/vue/outline'
 import { getHttpErrorMessage } from '@/helpers/http';
 import MainLayout from '@/layouts/MainLayout.vue';
 import { deleteCashFlow } from '@/api/cashflow';
@@ -97,6 +101,7 @@ export default {
     MainLayout,
     PencilIcon,
     TrashIcon,
+    InformationCircleIcon,
     Loading,
     Empty,
   },

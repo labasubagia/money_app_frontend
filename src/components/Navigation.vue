@@ -85,8 +85,8 @@ export default {
   setup() {
     const urls = [
       { name: 'Home', path: '/' },
-      { name: 'Category', path: '/category' },
       { name: 'Cash Flow', path: '/cashflow' },
+      { name: 'Category', path: '/category' },
       { name: 'Edit Profile', path: '/edit-profile' },
     ];
 
