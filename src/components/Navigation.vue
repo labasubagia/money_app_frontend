@@ -21,8 +21,13 @@
       class="border-b-2 border-b-gray-200 shadow-md p-4 border-2 rounded-b-lg"
     >
       <div class="mt-2 mb-3 bg-gray-100 rounded-lg p-5">
-        <p>{{ user?.name }}</p>
-        <p class="mt-2 text-sm">{{ user?.email }}</p>
+        <div v-if="isLoading">
+          <p>Loading...</p>
+        </div>
+        <div v-else>
+          <p>{{ user?.name }}</p>
+          <p class="mt-2 text-sm">{{ user?.email }}</p>
+        </div>
       </div>
 
       <router-link
@@ -47,8 +52,13 @@
     <h1 class="text-center text-xl font-bold">{{ appName }}</h1>
 
     <div class="mt-4 mb-2 text-center bg-gray-100 p-4 rounded-lg">
-      <p>{{ user?.name }}</p>
-      <p class="mt-2 text-sm">{{ user?.email }}</p>
+      <div v-if="isLoading">
+        <p>Loading...</p>
+      </div>
+      <div v-else>
+        <p>{{ user?.name }}</p>
+        <p class="mt-2 text-sm">{{ user?.email }}</p>
+      </div>
     </div>
 
     <div class="mt-4">
@@ -96,6 +106,7 @@ export default {
 
     const appName = store.state.appName;
     const isTopNavOpen = ref(false);
+    const isLoading = ref(false);
 
     const isCurrentPath = (path) => route.path === path;
     const user = computed(() => store.state.user.detail);
@@ -108,7 +119,9 @@ export default {
 
     const onLoad = async () => {
       if (user.value) return;
+      isLoading.value = true;
       await store.dispatch('user/getProfile');
+      isLoading.value = false;
     }
 
     onLoad();
@@ -119,7 +132,8 @@ export default {
       urls,
       isCurrentPath,
       onLogout,
-      user
+      user,
+      isLoading,
     };
   },
 };

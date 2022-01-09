@@ -101,6 +101,7 @@ export default {
         if (!payload?.password) delete payload?.password;
         const { message } = await updateUser(payload)
         if (message) alert(message);
+        await store.dispatch('user/getProfile');
         router.back()
       } catch (error) {
         const validationError = getHttpValidationError(error);
