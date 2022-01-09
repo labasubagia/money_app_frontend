@@ -6,6 +6,7 @@
       class="w-full flex sm:hidden justify-between items-center p-2 px-4 border-b-2 border-b-gray-200"
     >
       <h1 class="text-lg font-bold">{{ appName }}</h1>
+
       <div class="flex">
         <button class="cursor-pointer" @click="isTopNavOpen = !isTopNavOpen">
           <MenuIcon class="w-9" v-if="!isTopNavOpen" />
@@ -19,6 +20,11 @@
       v-if="isTopNavOpen"
       class="border-b-2 border-b-gray-200 shadow-md p-4 border-2 rounded-b-lg"
     >
+      <div class="mt-2 mb-3 bg-gray-100 rounded-lg p-5">
+        <p>{{ user?.name }}</p>
+        <p class="mt-2 text-sm">{{ user?.email }}</p>
+      </div>
+
       <router-link
         v-for="({ path, name }, index) in urls"
         :key="index"
@@ -39,6 +45,12 @@
   <!-- Side nav -->
   <nav class="hidden sm:block p-4 w-full h-screen border-r-2 border-r-gray-100 shadow-sm bg-white">
     <h1 class="text-center text-xl font-bold">{{ appName }}</h1>
+
+    <div class="my-6 text-center bg-gray-100 p-4 rounded-lg">
+      <p>{{ user?.name }}</p>
+      <p class="mt-2 text-sm">{{ user?.email }}</p>
+    </div>
+
     <div class="mt-4">
       <router-link
         v-for="({ path, name }, index) in urls"
@@ -51,7 +63,7 @@
         :to="path"
       >{{ name }}</router-link>
       <button
-        class="px-4 py-2 bg-red-500 rounded-lg w-full text-sm text-white hover:bg-red-400"
+        class="mt-2 px-4 py-2 bg-red-500 rounded-lg w-full text-sm text-white hover:bg-red-400"
         @click="onLogout"
       >Logout</button>
     </div>
@@ -59,7 +71,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 import { MenuIcon, XIcon } from '@heroicons/vue/outline'
 import { getToken, logout } from '@/helpers/auth';
@@ -86,6 +98,7 @@ export default {
     const isTopNavOpen = ref(false);
 
     const isCurrentPath = (path) => route.path === path;
+    const user = computed(() => store.state.user.detail);
 
     const onLogout = () => {
       logout();
@@ -93,7 +106,21 @@ export default {
       router.replace({ name: 'Login' })
     }
 
-    return { isTopNavOpen, appName, urls, isCurrentPath, onLogout };
+    const onLoad = async () => {
+      if (user.value) return;
+      await store.dispatch('user/getProfile');
+    }
+
+    onLoad();
+
+    return {
+      isTopNavOpen,
+      appName,
+      urls,
+      isCurrentPath,
+      onLogout,
+      user
+    };
   },
 };
 </script>

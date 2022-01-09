@@ -83,10 +83,10 @@ export default {
       if (!value) return;
       form.value.name = value.name;
       form.value.email = value.email;
-    })
+    }, { immediate: true })
 
     const onLoad = async () => {
-      store.commit('user/setDetail', null);
+      if (detail) return;
       isLoading.value = true
       await store.dispatch('user/getProfile');
       isLoading.value = false
