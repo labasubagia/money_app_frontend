@@ -6,54 +6,52 @@
 
     <hr class="mt-4" />
 
-    <div class="mt-2">
-      <Loading v-if="isLoading" />
-      <div v-else>
-        <div class="grid grid-cols-1 sm:grid-cols-2 items-center">
-          <div>
-            <p class="font-semibold">Name</p>
-            <p class="mt-2">{{ detail?.name }}</p>
-          </div>
-
-          <div class="mt-4">
-            <p class="font-semibold">Date</p>
-            <p class="mt-2">{{ moment(detail?.date).format('DD/MM/YYYY') }}</p>
-          </div>
-
-          <div class="mt-4">
-            <p class="font-semibold">Amount</p>
-            <p
-              :class="[
-                'text-2xl mt-2',
-                detail?.amount_value >= 0 ? 'text-green-500' : 'text-red-500'
-              ]"
-            >{{ detail?.amount_value }}</p>
-          </div>
-
-          <div class="mt-4">
-            <p class="font-semibold">Type</p>
-            <p class="mt-2">{{ detail?.category_type }}</p>
-          </div>
-
-          <div class="mt-4">
-            <p class="font-semibold">Category</p>
-            <p class="mt-2">{{ detail?.category_name }}</p>
-          </div>
+    <Loading v-if="isLoading" class="mt-2" />
+    <div v-else class="mt-2">
+      <div class="grid grid-cols-1 sm:grid-cols-2 items-center">
+        <div>
+          <p class="font-semibold">Name</p>
+          <p class="mt-2">{{ detail?.name }}</p>
         </div>
 
-        <div v-if="detail?.note" class="mt-6 bg-gray-100 p-4 rounded-lg">
-          <p class="font-semibold">Note</p>
-          <p class="mt-2">{{ detail?.note }}</p>
+        <div class="mt-4">
+          <p class="font-semibold">Date</p>
+          <p class="mt-2">{{ moment(detail?.date).format('DD/MM/YYYY') }}</p>
         </div>
 
-        <div v-if="detail?.receipt_url" class="mt-6">
-          <p class="font-semibold">Receipt</p>
-          <img
-            class="mt-2 w-full sm:w-6/12 md:w-3/12 border-2 rounded"
-            :src="detail?.receipt_url"
-            alt="Receipt"
-          />
+        <div class="mt-4">
+          <p class="font-semibold">Amount</p>
+          <p
+            :class="[
+              'text-2xl mt-2',
+              detail?.amount_value >= 0 ? 'text-green-500' : 'text-red-500'
+            ]"
+          >{{ detail?.amount_value }}</p>
         </div>
+
+        <div class="mt-4">
+          <p class="font-semibold">Type</p>
+          <p class="mt-2">{{ detail?.category_type }}</p>
+        </div>
+
+        <div class="mt-4">
+          <p class="font-semibold">Category</p>
+          <p class="mt-2">{{ detail?.category_name }}</p>
+        </div>
+      </div>
+
+      <div v-if="detail?.note" class="mt-6 bg-gray-100 p-4 rounded-lg">
+        <p class="font-semibold">Note</p>
+        <p class="mt-2">{{ detail?.note }}</p>
+      </div>
+
+      <div v-if="detail?.receipt_url" class="mt-6">
+        <p class="font-semibold">Receipt</p>
+        <img
+          class="mt-2 w-full sm:w-6/12 md:w-3/12 border-2 rounded"
+          :src="detail?.receipt_url"
+          alt="Receipt"
+        />
       </div>
     </div>
   </MainLayout>
