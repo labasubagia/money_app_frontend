@@ -9,8 +9,8 @@
           class="border-2 rounded-lg py-1 px-3 w-full"
           type="date"
           :value="startDate"
-          @input="e => store.commit('setStartDate', e.target.value)"
-        >
+          @input="(e) => store.commit('setStartDate', e.target.value)"
+        />
       </div>
 
       <div class="mx-0 mt-2 sm:mx-4 sm:mt-0">
@@ -19,22 +19,22 @@
           class="border-2 rounded-lg py-1 px-3 w-full"
           type="date"
           :value="endDate"
-          @input="e => store.commit('setEndDate', e.target.value)"
-        >
+          @input="(e) => store.commit('setEndDate', e.target.value)"
+        />
       </div>
     </div>
 
-    <Loading v-if="isLoading" class="mt-6"/>
+    <Loading v-if="isLoading" class="mt-6" />
     <div v-else class="grid gap-4 mt-6 grid-cols-1 md:grid-cols-2 w-full">
       <!-- Expense -->
       <div class="p-4 border-l-8 border-l-red-500 rounded-lg shadow-md border-2">
-        <h1 class="text-2xl">- {{ formatNumber(summary?.expense_date_range) }}</h1>
+        <h1 class="text-2xl">{{ formatNumber(summary?.expense_date_range) }}</h1>
         <p>Expense</p>
       </div>
 
       <!-- Income -->
       <div class="p-4 border-l-8 border-l-green-500 rounded-lg shadow-md border-2">
-        <h1 class="text-2xl">+ {{ formatNumber(summary?.income_date_range) }}</h1>
+        <h1 class="text-2xl">{{ formatNumber(summary?.income_date_range) }}</h1>
         <p>Income</p>
       </div>
 
@@ -42,7 +42,9 @@
       <div
         :class="[
           'p-4 rounded-lg border-l-8 shadow-md border-2',
-          summary?.balance_date_range >= 0 ? 'border-l-green-500' : 'border-l-red-500'
+          summary?.balance_date_range >= 0
+            ? 'border-l-green-500'
+            : 'border-l-red-500',
         ]"
       >
         <h1 class="text-2xl">{{ formatNumber(summary?.balance_date_range) }}</h1>
@@ -53,7 +55,7 @@
       <div
         :class="[
           'p-4 rounded-lg border-l-8 shadow-md border-2',
-          summary?.balance >= 0 ? 'border-l-green-500' : 'border-l-red-500'
+          summary?.balance >= 0 ? 'border-l-green-500' : 'border-l-red-500',
         ]"
       >
         <h1 class="text-2xl">{{ formatNumber(summary?.balance) }}</h1>
@@ -87,12 +89,12 @@ export default {
     const loadSummary = async () => {
       isLoading.value = true;
       await store.dispatch('cashflow/getSummary');
-      isLoading.value = false
-    }
+      isLoading.value = false;
+    };
 
     loadSummary();
 
-    watch([startDate, endDate], loadSummary)
+    watch([startDate, endDate], loadSummary);
 
     return {
       summary,

@@ -8,14 +8,17 @@
       <h1 class="text-lg font-bold">{{ appName }}</h1>
       <div class="flex">
         <button class="cursor-pointer" @click="isTopNavOpen = !isTopNavOpen">
-          <MenuIcon class="w-9" v-if="!isTopNavOpen"/>
+          <MenuIcon class="w-9" v-if="!isTopNavOpen" />
           <XIcon class="w-9" v-else />
         </button>
       </div>
     </div>
 
     <!-- menu -->
-    <div v-if="isTopNavOpen" class="border-b-2 border-b-gray-200 shadow-md p-4 border-2 rounded-b-lg">
+    <div
+      v-if="isTopNavOpen"
+      class="border-b-2 border-b-gray-200 shadow-md p-4 border-2 rounded-b-lg"
+    >
       <router-link
         v-for="({ path, name }, index) in urls"
         :key="index"

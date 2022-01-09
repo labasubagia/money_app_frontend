@@ -4,9 +4,8 @@
       <h1 class="text-xl font-bold">Edit Profile</h1>
     </div>
 
-    <Loading v-if="isLoading" class="mt-4"/>
+    <Loading v-if="isLoading" class="mt-4" />
     <form v-else class="mt-4" @submit.prevent="onSubmit">
-
       <!-- Email -->
       <div class="mb-4">
         <p class="mb-1 text-sm">Email</p>
@@ -98,8 +97,8 @@ export default {
     const onSubmit = async () => {
       try {
         isLoading.value = true;
-        const payload = {...form.value};
-        if(!payload?.password) delete payload?.password;
+        const payload = { ...form.value };
+        if (!payload?.password) delete payload?.password;
         const { message } = await updateUser(payload)
         if (message) alert(message);
         router.back()

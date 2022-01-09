@@ -15,8 +15,9 @@ export const getCashFlowSummary = async ({
 export const getAllCashFlow = async ({
   start_date = DEFAULT_START_DATE,
   end_date = DEFAULT_END_DATE,
+  category_id,
 } = {}) => {
-  const params = { start_date, end_date };
+  const params = { start_date, end_date, category_id };
   const res = await axiosInstance.get('/cashflow', { params });
   const data = await res.data;
   return data?.data ?? [];

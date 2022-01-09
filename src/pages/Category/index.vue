@@ -5,9 +5,9 @@
       <router-link to="/category/add" class="bg-blue-500 p-2 px-3 text-white rounded-lg">Add</router-link>
     </div>
 
-    <Loading v-if="isLoading" class="mt-4"/>
+    <Loading v-if="isLoading" class="mt-4" />
     <div v-else class="mt-4">
-      <Empty v-if="!categories.length" text="No Categories"/>
+      <Empty v-if="!categories.length" text="No Categories" />
       <div
         v-else
         v-for="({ _id, name, type, user_id }, i) in categories"
@@ -25,7 +25,7 @@
         <div v-if="user_id" class="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <PencilIcon
             class="w-9 bg-orange-500 p-1 text-white rounded-lg cursor-pointer"
-            @click="router.replace({path: `/category/edit/${_id}`})"
+            @click="router.replace({ path: `/category/edit/${_id}` })"
           />
           <TrashIcon
             class="w-9 bg-red-500 p-2 text-white rounded-lg cursor-pointer"

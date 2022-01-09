@@ -15,6 +15,7 @@ const store = createStore({
     appName: 'Money App',
     startDate: DEFAULT_START_DATE,
     endDate: DEFAULT_END_DATE,
+    categoryId: undefined,
   },
 
   mutations: {
@@ -23,6 +24,9 @@ const store = createStore({
     },
     setEndDate(state, value) {
       state.endDate = value;
+    },
+    setCategoryId(state, value) {
+      state.categoryId = value;
     },
   },
 });

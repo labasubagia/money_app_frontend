@@ -13,6 +13,15 @@ const cashFlowStore = {
     detail: null,
   },
 
+  getters: {
+    totalListAmount(state) {
+      return state.list.reduce(
+        (total, item) => total + (item?.amount_value ?? 0),
+        0
+      );
+    },
+  },
+
   actions: {
     async getSummary({ commit, rootState }) {
       const payload = {
@@ -26,6 +35,7 @@ const cashFlowStore = {
       const payload = {
         start_date: rootState?.startDate,
         end_date: rootState?.endDate,
+        category_id: rootState?.categoryId,
       };
       commit('setList', await getAllCashFlow(payload));
     },
